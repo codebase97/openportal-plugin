@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+RO:wght@100..400&family=Playwrite+VN:wght@100..400&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+html {
+    font-family: "Open Sans", serif;
+}
+#app {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+body:not(.dark-mode) #app, body:not(.dark-mode) component-modal {
+    --primary: #0b57d0;
+    --emphasis: #0b57d0;
+    --emphasis-primary: #0b57d0;
+    --bg-color: #f8fafd;
+    --color: #1f2328;
+    --light: #444746;
+    --border: rgb(240, 241, 241);
+}
+#app .component_filemanager_shell {
+    background: var(--bg-color);
+}
+
+body:not(.dark-mode) #app .component_page_filespage {
+    background: white;
+}
+body:not(.dark-mode) #app .scrolling [is="component_submenu"] {
+    background: #f0f4f9;
+}
+body:not(.dark-mode) #app .component_filemanager_shell [data-bind="filemanager-children"] {
+    border-top-left-radius: 15px;
+}
+
+
+/* file / folder view */
+body:not(.dark-mode) #app .list > .component_thing {
+    color: var(--color);
+}
+body:not(.dark-mode) #app .list > .component_thing .component_datetime {
+    color: var(--light);
+    font-weight: 400;
+}
+body:not(.dark-mode) #app .list > .component_thing.view-list {
+    margin-bottom: -3px;
+
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action.left button {
+    background: white;
+    border-radius: .5rem;
+    border: 1px solid #747775;
+    margin-right: 8px;
+    color: #444746;
+    font-weight: bold;
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action.right {
+    background: white;
+    border: 1px solid #747775;
+    border-radius: 15px;
+    padding: 0 5px;
+}
+body:not(.dark-mode) #app .list > .component_thing.view-list {
+    border-top: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+}
+body:not(.dark-mode) #app [is="component_filesystem"] {
+    margin-top: 20px;
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action button {
+    text-transform: initial;
+    font-size: 0.9rem;
+}
+body:not(.dark-mode) #app .list > .component_thing.view-list img.component_icon {
+    padding-right: 10px;
+}
+
+/* sidebar */
+body:not(.dark-mode) #app [data-bind="sidebar"] a[aria-selected="true"] {
+    background: #c2e7ff!important;
+    border-radius: 15px;
+}
+body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3 {
+    margin-top: 15px;
+    margin-bottom: 90px;
+}
+body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3 img {
+    opacity: 0;
+}
+body:not(.dark-mode) #app [data-bind="sidebar"] h3 input::placeholder {
+    color: var(--color);
+    font-weight: 500;
+}
+body:not(.dark-mode) #app [data-bind="sidebar"] h3 input {
+    font-size: 1.3rem;
+    margin-left: 30px;
+}
+body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3:before {
+    content: " ";
+    width: 45px;
+    height: 45px;
+    top: 7px;
+    left: 20px;
+    position: absolute;
+    filter: opacity(0.8);
+    background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNjQwIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDcuMC4wIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTQwMyAzNzguOUwyMzkuNCA5Nkw0MDAuNiA5Nkw1NjQuMiAzNzguOUw0MDMgMzc4Ljl6TTI2NS41IDQwMi41TDE4NC45IDU0NEw0OTUuNCA1NDRMNTc2IDQwMi41TDI2NS41IDQwMi41ek0yMTguMSAxMzEuNEw2NCA0MDIuNUwxNDQuNiA1NDRMMzAxIDI3Mi44TDIxOC4xIDEzMS40eiIvPjwvc3ZnPg==);
+}
+body:not(.dark-mode) #app .component_mobilefileupload {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    bottom: inherit;
+    right: inherit;
+}
+body:not(.dark-mode) #app .component_mobilefileupload input[type="file"] + label {
+    border-radius: 10px;
+    width: 100px;
+    background: white;
+    box-shadow: 2px 2px 5px #a2a2a2;
+}
+body:not(.dark-mode) #app .component_mobilefileupload input[type="file"] + label:after {
+    content: "New ";
+    padding-right: 16px;
+    font-size: 0.9rem;
+}
+body:not(.dark-mode) #app .component_mobilefileupload input[type="file"] + label img {
+    filter: brightness(0.3);
+    width: 20px;
+    height: 20px;
+}
+
+/* breadcrumb */
+body:not(.dark-mode) #app .component_breadcrumb {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_logout .component_icon {
+    filter: brightness(0.5);
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element .component_path-element-wrapper {
+    font-size: 1.25rem;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element .component_path-element-wrapper {
+    font-weight: 500;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element .component_path-element-wrapper a {
+    font-weight: normal;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element a.label {
+    color: inherit;
+}
+
+/* submenu */
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu {
+    margin-top: 20px;
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action button img {
+    filter: brightness(0.5);
+}

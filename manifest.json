@@ -1,0 +1,14 @@
+{
+    "author": "Filestash Pty Ltd",
+    "version": "v0.1",
+    "modules": [
+        {
+            "type": "css",
+            "entrypoint": "openportal.css"
+        },
+        {
+            "type": "patch",
+            "entrypoint": "openportal.patch"
+        }
+    ]
+}
