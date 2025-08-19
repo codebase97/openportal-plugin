@@ -1,4 +1,6 @@
 {
+    "id": "openportal",
+    "name": "OpenPortal overrides",
     "author": "Filestash Pty Ltd",
     "version": "v0.1",
     "modules": [
