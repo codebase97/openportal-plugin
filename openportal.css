@@ -8,10 +8,6 @@ html {
     font-size: 0.95rem;
 }
 
-#app .component_filemanager_shell .component_sidebar a > div {
-    text-transform: none;
-}
-
 body:not(.dark-mode) #app, body:not(.dark-mode) component-modal {
     --primary: #0b57d0;
     --emphasis: #0b57d0;
@@ -158,4 +154,9 @@ body:not(.dark-mode) #app [is="component_submenu"] .component_submenu {
 }
 body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action button img {
     filter: brightness(0.5);
+}
+
+
+#app .component_filemanager_shell .component_sidebar a > div {
+    text-transform: none;
 }
