@@ -11,7 +11,7 @@ index 52d3994a..75ac6f3c 100644
 +++ b/public/assets/components/sidebar.js
 @@ -28,1 +28,1 @@
 -                <input type="text" placeholder="${t("Your Files")}" />
-+                <input type="text" placeholder="${t("Drive")}" />
++                <input type="text" placeholder="${t("Portal")}" />
 diff --git a/public/assets/pages/filespage/ctrl_newitem.js b/public/assets/pages/filespage/ctrl_newitem.js
 index cb868bad..56778e76 100644
 --- a/public/assets/pages/filespage/ctrl_newitem.js
