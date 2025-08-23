@@ -1,8 +1,6 @@
 {
-    "id": "openportal",
-    "name": "OpenPortal overrides",
-    "author": "Filestash Pty Ltd",
-    "version": "v0.1",
+    "author": "OpenPortal Co",
+    "version": "v1.1",
     "modules": [
         {
             "type": "css",
