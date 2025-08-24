@@ -44,12 +44,12 @@ index 48f1aeae..82dda916 100644
 +/**
 + * Get (and memoize) the pretty name promise for this entry
 + */
-+function getPrettyName(parentPath, acidFolder) {
++async function getPrettyName(parentPath, acidFolder) {
 +  const key = `${parentPath}${acidFolder}`;
 +  if (!accountNameCache.has(key)) {
 +    accountNameCache.set(
 +      key,
-+      fetchAccountName(parentPath, acidFolder).catch(() => null)
++      await fetchAccountName(parentPath, acidFolder).catch(() => null)
 +    );
 +  }
 +  return accountNameCache.get(key);
