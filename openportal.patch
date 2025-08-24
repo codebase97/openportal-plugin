@@ -26,10 +26,10 @@ index 48f1aeae..82dda916 100644
 +async function fetchAccountName(parentPath, acidFolder) {
 +  // parentPath comes in like "a/" ; ensure no duplicate slashes
 +  const base = parentPath.endsWith("/") ? parentPath.slice(0, -1) : parentPath;
-+  const url  = `/files/${base}/${acidFolder}/_meta/account.json`;
++  const url  = `/api/files/cat?path=${encodeURIComponent(base + acidFolder + "/_meta/account.json"}`; 
 +
 +  try {
-+    const res = await fetch(url, { headers: { "Accept": "application/json" } });
++    const res = await fetch(url, { credentials: "same-origin", headers: { "Accept": "application/json" } }); 
 +    if (!res.ok) return null;
 +    const data = await res.json();
 +
