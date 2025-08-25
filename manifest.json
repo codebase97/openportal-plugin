@@ -12,6 +12,10 @@
         },
         {
             "type": "patch",
+            "entrypoint": "header.patch"
+        },
+        {
+            "type": "patch",
             "entrypoint": "openportal.sidebar.patch"
         }
     ]
