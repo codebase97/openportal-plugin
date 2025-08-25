@@ -1,6 +1,6 @@
 {
     "author": "OpenPortal Co",
-    "version": "v1.1",
+    "version": "v1.2",
     "modules": [
         {
             "type": "css",
@@ -9,6 +9,10 @@
         {
             "type": "patch",
             "entrypoint": "openportal.patch"
+        },
+        {
+            "type": "patch",
+            "entrypoint": "openportal.sidebar.patch"
         }
     ]
 }
