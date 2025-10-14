@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+RO:wght@100..400&family=Playwrite+VN:wght@100..400&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+html {
+    font-family: "Open Sans", serif;
+}
+#app {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+body:not(.dark-mode) #app, body:not(.dark-mode) component-modal {
+    --primary: #0b57d0;
+    --emphasis: #0b57d0;
+    --emphasis-primary: #0b57d0;
+    --bg-color: #f8fafd;
+    --color: #1f2328;
+    --light: #444746;
+    --border: rgb(240, 241, 241);
+}
+#app .component_filemanager_shell {
+    background: var(--bg-color);
+}
+
+body:not(.dark-mode) #app .component_page_filespage {
+    background: white;
+}
+body:not(.dark-mode) #app .scrolling [is="component_submenu"] {
+    background: #f0f4f9;
+}
+body:not(.dark-mode) #app .component_filemanager_shell [data-bind="filemanager-children"] {
+    border-top-left-radius: 15px;
+}
+
+
+/* file / folder view */
+body:not(.dark-mode) #app .list > .component_thing {
+    color: var(--color);
+}
+body:not(.dark-mode) #app .list > .component_thing .component_datetime {
+    color: var(--light);
+    font-weight: 400;
+}
+body:not(.dark-mode) #app .list > .component_thing.view-list {
+    margin-bottom: -3px;
+
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action.left button {
+    background: white;
+    border-radius: .5rem;
+    border: 1px solid #747775;
+    margin-right: 8px;
+    color: #444746;
+    font-weight: bold;
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action.right {
+    background: white;
+    border: 1px solid #747775;
+    border-radius: 15px;
+    padding: 0 5px;
+}
+body:not(.dark-mode) #app .list > .component_thing.view-list {
+    border-top: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+}
+body:not(.dark-mode) #app [is="component_filesystem"] {
+    margin-top: 20px;
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action button {
+    text-transform: initial;
+    font-size: 0.9rem;
+}
+body:not(.dark-mode) #app .list > .component_thing.view-list img.component_icon {
+    padding-right: 10px;
+}
+
+/* sidebar */
+body:not(.dark-mode) #app [data-bind="sidebar"] a[aria-selected="true"] {
+    background: #c2e7ff!important;
+    border-radius: 15px;
+}
+body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3 {
+    margin-top: 15px;
+    margin-bottom: 90px;
+}
+body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3 img {
+    opacity: 0;
+}
+body:not(.dark-mode) #app [data-bind="sidebar"] h3 input::placeholder {
+    color: var(--color);
+    font-weight: 500;
+}
+body:not(.dark-mode) #app [data-bind="sidebar"] h3 input {
+    font-size: 1.3rem;
+    margin-left: 30px;
+}
+body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3:before {
+    content: " ";
+    width: 45px;
+    height: 45px;
+    top: 7px;
+    left: 20px;
+    position: absolute;
+    filter: opacity(0.8);
+    background: url(data:image/svg+xml;base64,PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KDTwhLS0gVXBsb2FkZWQgdG86IFNWRyBSZXBvLCB3d3cuc3ZncmVwby5jb20sIFRyYW5zZm9ybWVkIGJ5OiBTVkcgUmVwbyBNaXhlciBUb29scyAtLT4KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiMwMDAwMDAiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSI3LjE2ODAwMDAwMDAwMDAwMSIgdHJhbnNmb3JtPSJyb3RhdGUoMCltYXRyaXgoMSwgMCwgMCwgMSwgMCwgMCkiPgoNPGcgaWQ9IlNWR1JlcG9fYmdDYXJyaWVyIiBzdHJva2Utd2lkdGg9IjAiLz4KDTxnIGlkPSJTVkdSZXBvX3RyYWNlckNhcnJpZXIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSIjQ0NDQ0NDIiBzdHJva2Utd2lkdGg9IjMuMDcyIi8+Cg08ZyBpZD0iU1ZHUmVwb19pY29uQ2FycmllciI+Cg08cGF0aCBmaWxsPSIjMDAwMDAwIiBkPSJNMjk4LjczNiAyMS4wMTZjLTk5LjI5OCAwLTE5NS45MjggMTA0LjY0Ny0yMTUuODMgMjMzLjczNi03LjA3NCA0NS44ODctMy40OTMgODguNjggOC41MTIgMTI0Ljc4Ny00LjA4Mi02LjQwNy03LjkyLTEzLjA5LTExLjQ2Ny0yMC4wMzQtMTYuNTE2LTMyLjMzNS0yNC42MjctNjUuMzc4LTI1LTk2LjI3Mi0xMS43NCAzNi4yNTQtOC4wODMgODIuNDcgMTQuNDgyIDEyNi42NDMgMjcuNyA1NC4yMjcgODEuNTYzIDkxLjk0IDEzOS44NyA5Ny41MDIgNS42NTguNzI1IDExLjQ0NyAxLjEwOCAxNy4zNjQgMS4xMDggOTkuMjk4IDAgMTk1LjkzLTEwNC42NDcgMjE1LjgzLTIzMy43MzYgOS4yOC02MC4xOTYuMjMtMTE1LjA3Mi0yMi4xMzMtMTU2LjUwNiAyMS42MjUgMjEuODY3IDM2LjU2IDQ1Ljc4NiA0NC42MTcgNjkuNDk2LjYyMy0zMC40MDgtMTQuMDY0LTY1Ljc2Ni00NC4yMS05NS44MDYtMzMuNzE4LTMzLjU5OC03Ny4yMjctNTAuOTEtMTE0Ljk5NS01MC43MjMtMi4zMjgtLjExOC00LjY3LS4xOTctNy4wNC0uMTk3em0tNS42IDM2LjM1N2M0MC4yMjMgMCA3My42NSAyMC4zNDIgOTUuNzAyIDUzLjUzMyAxNS45MTUgNDIuODg4IDEyLjUxIDEwOC4zMTUuOTggMTQ3Ljg1OC0xNi4wMiA1NC45NDQtNDAuNTk4IDk2LjAzNS03OS43NyAxMjYuMTA3LTQxLjc5IDMyLjA4NC05OC40NDcgMjQuMzktMTE1Ljg3NC01Ljc5OC0xLjM2NS0yLjM2My0yLjQ4Ny00LjgzMi0zLjM4LTcuMzg1IDExLjcyNCAxNC4wNiAzOC4xODggMTQuOTQ0IDYxLjgxNyAxLjMgMjUuNDgtMTQuNzEgMzguMDAzLTQwLjcyNyAyNy45NjgtNTguMTA4LTEwLjAzNi0xNy4zODQtMzguODI2LTE5LjU0OC02NC4zMDctNC44MzctOS44MyA1LjY3Ni0xNy43MiAxMy4wMzctMjMuMTQgMjAuOTM0LjUwNy0xLjI5NSAxLjA0My0yLjU5IDEuNjI2LTMuODgtMTguNjg3IDI0LjQ5LTI0LjU2MiA1Mi4xMjYtMTIuODQ4IDcyLjQxNyAzOC43MDIgNDUuOTIzIDk4LjA3IDI1LjUwMyAxNDAuNzQ2LTYuNDI2IDM3Ljk1LTI4LjM5MiA3Mi4zMi03My41NSA4OS4zNTYtMTMxLjk4OCAxLjI2NS00LjM0IDIuNDE2LTguNjc3IDMuNDY3LTEzLjAwOC0uMjg2IDIuMjE4LS41OSA0LjQ0Mi0uOTM0IDYuNjc4LTE2LjgwNyAxMDkuMDItOTguNDEyIDE5Ny4zOTYtMTgyLjI3MiAxOTcuMzk2LTM1LjY0NCAwLTY1Ljk1NC0xNS45NzUtODcuNzQtNDIuNzEtMjYuNDkyLTQ4LjM5Ni0xNS45ODgtMTQyLjA4MyA0LjY3NS0xODUuMTUgMjYuNzQ1LTU1Ljc0MiA2Ni4xMzMtMTIyLjc3IDEzNC4zMjQtMTE2LjgwNCA0Ni4wMyA0LjAyNyA2My4wOTggNTguNjM3IDM5LjEyOCAxMTYuMjItOC42MSAyMC42ODUtMjEuMTkyIDM5LjMxNC0zNi4yMSA1NC4zMTMgMjQuOTEtMTYuNiA0Ni43Mi00Mi4xMyA1OS41NzItNzMgMjMuOTctNTcuNTgzIDYuOTQtMTEzLjQyMi0zOS4xMy0xMTYuODA1LTg1LjczNy02LjI5Ni0xMzcuNjM4IDU4LjU1LTE3Ny41NDIgMTI4LjQ4NS05LjIxIDE5LjktMTYuMTgyIDQwLjM1LTIwLjk3NyA2MC43MDcuNDk0LTcuNDM1IDEuMzEyLTE0Ljk5IDIuNDkzLTIyLjY1MkMxMjcuNjcgMTQ1Ljc1IDIwOS4yNzUgNTcuMzczIDI5My4xMzUgNTcuMzczeiIvPgoNPC9nPgoNPC9zdmc+);
+    background-size: contain;
+}
+body:not(.dark-mode) #app .component_mobilefileupload {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    bottom: inherit;
+    right: inherit;
+}
+body:not(.dark-mode) #app .component_mobilefileupload input[type="file"] + label {
+    border-radius: 10px;
+    width: 100px;
+    background: white;
+    box-shadow: 2px 2px 5px #a2a2a2;
+}
+body:not(.dark-mode) #app .component_mobilefileupload input[type="file"] + label:after {
+    content: "New ";
+    padding-right: 16px;
+    font-size: 0.9rem;
+}
+body:not(.dark-mode) #app .component_mobilefileupload input[type="file"] + label img {
+    filter: brightness(0.3);
+    width: 20px;
+    height: 20px;
+}
+
+/* breadcrumb */
+body:not(.dark-mode) #app .component_breadcrumb {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_logout .component_icon {
+    filter: brightness(0.5);
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element .component_path-element-wrapper {
+    font-size: 1.25rem;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element .component_path-element-wrapper {
+    font-weight: 500;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element .component_path-element-wrapper a {
+    font-weight: normal;
+}
+body:not(.dark-mode) #app .component_breadcrumb .component_path-element a.label {
+    color: inherit;
+}
+
+/* submenu */
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu {
+    margin-top: 20px;
+}
+body:not(.dark-mode) #app [is="component_submenu"] .component_submenu .action button img {
+    filter: brightness(0.5);
+}
+
+.info_extension > span.ellipsis {
+    text-overflow: clip;
+}
+
+.component_filemanager_shell .component_sidebar a > div {
+    text-transform: uppercase !important;
+}

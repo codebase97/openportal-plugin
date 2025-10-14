@@ -1,0 +1,60 @@
+diff --git a/public/assets/pages/filespage/thing.js b/public/assets/pages/filespage/thing.js
+index c8751ac1..67e378f6 100644
+--- a/public/assets/pages/filespage/thing.js
++++ b/public/assets/pages/filespage/thing.js
+@@ -97,6 +97,55 @@ export function createThing({
+     $img.setAttribute("src", (type === "file" ? IMAGE.FILE : IMAGE.FOLDER));
+     $img.setAttribute("alt", type);
+     $label.textContent = name;
++    // Always render the real name first; then (for acid-* folders) try to swap to a pretty name
++    if (type === "directory" && /^acid-/i.test(name)) {
++  // Prefer a data-path the component sets for us (works in both grid & list)
++      let derived = $thing.getAttribute("data-path") || "";
++
++  // If missing, derive from the anchor href: /files/<path...>
++      if (!derived) {
++        const href = $thing.getAttribute("href") || "";
++        const m = href.match(/\/files(.*)$/);
++        if (m) derived = decodeURIComponent(m[1]).replace(/^\/+/, "");
++    }
++
++  // If we couldn't figure the path, bail out quietly
++    if (!derived) {
++    // console.debug("[openportal] no derived path for", name);
++    } else {
++    // Normalize trailing slash, then point to the account metadata
++        if (!derived.endsWith("/")) derived += "/";
++        const fullMeta = derived + "_meta/account.json";
++
++    // console.debug("[openportal] grid lookup", { name, fullMeta });
++
++    // Defer to next frame so the DOM is stable, then fetch and swap
++        requestAnimationFrame(() => {
++          fetch(`/api/files/cat?path=${encodeURIComponent(fullMeta)}`, {
++            headers: { "Accept": "application/json" }
++        })
++          .then(res => (res.ok ? res.json() : null))
++          .then(data => {
++              if (!data) return;
++
++          // Choose the best available field in your JSON
++              const pretty =
++            data.name ||          // preferred
++            data.org_id ||        // fallback
++            data.acid_display ||  // final fallback
++            data.account?.name || // (supports nested shape if present)
++            null;
++
++            if (pretty) {
++                const el = $thing.querySelector(".info_extension .ellipsis");
++                if (el) el.textContent = String(pretty);
++            }
++        })
++        .catch(() => { /* ignore network errors */ });
++      });
++    }
++}
++
+ 
+     if (type === "file") {
+         $extension.textContent = ext;

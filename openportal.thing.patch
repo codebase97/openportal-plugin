@@ -1,0 +1,107 @@
+diff --git a/public/assets/pages/filespage/thing.js b/public/assets/pages/filespage/thing.js
+index c8751ac1..87d6062c 100644
+--- a/public/assets/pages/filespage/thing.js
++++ b/public/assets/pages/filespage/thing.js
+@@ -38,6 +38,64 @@ export function init() {
+     };
+ }
+ 
++// === OpenPortal shared account-name resolver (singleton) ===
++window.OPENPORTAL_ACCOUNT = window.OPENPORTAL_ACCOUNT || (() => {
++  // Cache of resolved names and single-flight dedupe of in-progress fetches
++  const cache    = new Map(); // fullpath -> string|null
++  const inflight = new Map(); // fullpath -> Promise<string|null>
++
++  // Choose the best display field from meta.json or account.json
++  const pick = (data) => [ (data?.name ?? data?.account?.name ?? data?.acid_display ?? data?.org_id ?? null), (data?.label ?? data?.org_id ?? null) ];
++    // data?.name || data?.org_id || data?.acid_display || data?.account?.name || null;
++
++  // Normalize and percent-encode path for Filestash /api/files/cat
++  function toCatURL(fullpath) {
++    // fullpath should be like: /.../acid-xxx/.../_meta/account.json or meta.json
++    let p = fullpath || "";
++    p = p.replace(/\/{2,}/g, "/");
++    if (!p.startsWith("/")) p = "/" + p;
++    return "/api/files/cat?path=" + encodeURIComponent(p);
++  }
++
++  async function fetchName(fullpath) {
++    const url = toCatURL(fullpath);
++    try {
++      const res = await fetch(url, { headers: { Accept: "application/json" } });
++      if (!res.ok) return null; // swallow 404 / cancels etc.
++      const data = await res.json();
++      return pick(data);
++    } catch {
++      return null; // network/cancel — treat as no-op
++    }
++  }
++
++  return {
++    /**
++     * Get pretty name for an account meta path.
++     * @param {string} fullpath  /…/_meta/account.json or /../_meta/meta.json
++     * @returns {Promise<string|null>}
++     */
++    async getName(fullpath) {
++      if (cache.has(fullpath))   return cache.get(fullpath);
++      if (inflight.has(fullpath)) return inflight.get(fullpath);
++
++      const p = fetchName(fullpath)
++        .then((pretty) => {
++          cache.set(fullpath, pretty);
++          inflight.delete(fullpath);
++          return pretty;
++        })
++        .catch(() => {
++          inflight.delete(fullpath);
++          return null;
++        });
++
++      inflight.set(fullpath, p);
++      return p;
++    }
++  };
++})();
++
+ const $tmpl = createElement(`
+     <a href="__TEMPLATE__" class="component_thing no-select" draggable="false" data-link>
+         <div class="component_checkbox"><input name="select" type="checkbox"><span class="indicator"></span></div>
+@@ -96,9 +154,35 @@ export function createThing({
+     $time.textContent = formatTime(time);
+     $img.setAttribute("src", (type === "file" ? IMAGE.FILE : IMAGE.FOLDER));
+     $img.setAttribute("alt", type);
+-    $label.textContent = name;
++    $label.textContent = name; // keep base label
++
++    if (type === "directory" && /^acid-/i.test(name)) {
++        requestAnimationFrame(() => {
++        let derived = $thing.getAttribute("data-path") || "";
++        if (!derived) {
++          const href = $thing.getAttribute("href") || "";
++          const m = href.match(/\/files(.*)$/);
++          if (m) derived = decodeURIComponent(m[1]);
++      }
++
++      derived = (derived || "").replace(/\/{2,}/g, "/");
++      if (!derived.startsWith("/")) derived = "/" + derived;
++      if (!derived.endsWith("/"))  derived += "/";
++
++      const fullMeta = `${derived}.meta/meta.json`;
++
++      OPENPORTAL_ACCOUNT.getName(fullMeta).then((pretty) => {
++          if (!pretty) return;
++          const label = pretty?.[0] ?? pretty;  // display name
++          const orgId = pretty?.[1] ?? null;    // org_id
++          const el = $thing.querySelector(".component_filename .file-details .ellipsis");
++          const info = $thing.querySelector(".info_extension .ellipsis");
++          if (el) (el.textContent = String(label), info.textContent = String(orgId));
++      });
++        });
++    }
+ 
+-    if (type === "file") {
++  if (type === "file") {
+         $extension.textContent = ext;
+         const $filesize = document.createElement("span");
+         $filesize.classList.add("component_filesize");

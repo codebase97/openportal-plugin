@@ -1,0 +1,105 @@
+diff --git a/public/assets/pages/filespage/thing.js b/public/assets/pages/filespage/thing.js
+index c8751ac1..c6ad96d7 100644
+--- a/public/assets/pages/filespage/thing.js
++++ b/public/assets/pages/filespage/thing.js
+@@ -16,6 +16,64 @@ const mv = (from, to) => withVirtualLayer(
+     mvVL(from, to),
+ );
+ 
++// === OpenPortal shared account-name resolver (singleton) ===
++window.OPENPORTAL_ACCOUNT = window.OPENPORTAL_ACCOUNT || (() => {
++  // Cache of resolved names and single-flight dedupe of in-progress fetches
++  const cache    = new Map(); // fullpath -> string|null
++  const inflight = new Map(); // fullpath -> Promise<string|null>
++
++  // Choose the best display field from account.json
++  const pick = (data) =>
++    data?.name || data?.org_id || data?.acid_display || data?.account?.name || null;
++
++  // Normalize and percent-encode path for Filestash /api/files/cat
++  function toCatURL(fullpath) {
++    // fullpath should be like: /.../acid-xxx/.../_meta/account.json
++    let p = fullpath || "";
++    p = p.replace(/\/{2,}/g, "/");
++    if (!p.startsWith("/")) p = "/" + p;
++    return "/api/files/cat?path=" + encodeURIComponent(p);
++  }
++
++  async function fetchName(fullpath) {
++    const url = toCatURL(fullpath);
++    try {
++      const res = await fetch(url, { headers: { Accept: "application/json" } });
++      if (!res.ok) return null; // swallow 404 / cancels etc.
++      const data = await res.json();
++      return pick(data);
++    } catch {
++      return null; // network/cancel — treat as no-op
++    }
++  }
++
++  return {
++    /**
++     * Get pretty name for an account meta path.
++     * @param {string} fullpath  /…/_meta/account.json
++     * @returns {Promise<string|null>}
++     */
++    async getName(fullpath) {
++      if (cache.has(fullpath))   return cache.get(fullpath);
++      if (inflight.has(fullpath)) return inflight.get(fullpath);
++
++      const p = fetchName(fullpath)
++        .then((pretty) => {
++          cache.set(fullpath, pretty);
++          inflight.delete(fullpath);
++          return pretty;
++        })
++        .catch(() => {
++          inflight.delete(fullpath);
++          return null;
++        });
++
++      inflight.set(fullpath, p);
++      return p;
++    }
++  };
++})();
++
+ const IMAGE = {
+     FILE: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBoZWlnaHQ9IjE2IiB3aWR0aD0iMTYiPgogIDxwYXRoIHN0eWxlPSJjb2xvcjojMDAwMDAwO3RleHQtaW5kZW50OjA7dGV4dC10cmFuc2Zvcm06bm9uZTtmaWxsOiM4YzhjOGM7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuOTg0ODEwNDEiIGQ9Im0gMiwxMy4wODI0MTIgMC4wMTk0NjIsMS40OTIzNDcgYyA1ZS02LDAuMjIyMTQ1IDAuMjA1NTkwMiwwLjQyNDI2MiAwLjQzMTE1MDIsMC40MjQyNzIgTCAxMy41ODk2MTIsMTUgQyAxMy44MTUxNzMsMTQuOTk5OTk1IDEzLjk5OTk5LDE0Ljc5Nzg3NCAxNCwxNC41NzU3MjkgdiAtMS40OTMzMTcgYyAtNC4xNzE4NjkyLDAuNjYyMDIzIC03LjY1MTY5MjgsMC4zOTg2OTYgLTEyLDAgeiIgLz4KICA8cGF0aCBzdHlsZT0iY29sb3I6IzAwMDAwMDt0ZXh0LWluZGVudDowO3RleHQtdHJhbnNmb3JtOm5vbmU7ZGlzcGxheTppbmxpbmU7ZmlsbDojYWFhYWFhO3N0cm9rZS13aWR0aDowLjk4NDA4MTI3IiBkPSJNIDIuMzUwMSwxLjAwMTMzMTIgQyAyLjE1MjU5LDEuMDM4MzI0NyAxLjk5NjU5LDEuMjI3MjcyMyAyLjAwMDA5LDEuNDI0OTM1NiBWIDE0LjEzMzQ1NyBjIDVlLTYsMC4yMjE4MTYgMC4yMDUyMywwLjQyMzYzNCAwLjQzMDc5LDAuNDIzNjQ0IGwgMTEuMTM5LC0xLjAxZS00IGMgMC4yMjU1NiwtNmUtNiAwLjQzMDExLC0wLjIwMDc1OCAwLjQzMDEyLC0wLjQyMjU3NCBsIDYuN2UtNCwtOS44MjI2NDI2IGMgLTIuNDg0MDQ2LC0xLjM1NTAwNiAtMi40MzUyMzQsLTIuMDMxMjI1NCAtMy41MDAxLC0zLjMwOTcwNyAtMC4wNDMsLTAuMDE1ODgyIDAuMDQ2LDAuMDAxNzQgMCwwIEwgMi40MzA2NywxLjAwMTEwOCBDIDIuNDAzODMsMC45OTg1OSAyLjM3Njc0LDAuOTk4NTkgMi4zNDk5LDEuMDAxMTA4IFoiIC8+CiAgPHBhdGggc3R5bGU9ImRpc3BsYXk6aW5saW5lO2ZpbGw6IzhjOGM4YztmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzllNzU3NTtzdHJva2Utd2lkdGg6MDtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2Utb3BhY2l0eToxIiBkPSJtIDEwLjUwMDU3LDEuMDAyMDc2NCBjIDAsMy4yNzY4MDI4IC0wLjAwNTIsMy4xNzM5MTYxIDAuMzYyOTIxLDMuMjY5ODIwMiAwLjI4MDEwOSwwLjA3Mjk4NCAzLjEzNzE4LDAuMDM5ODg3IDMuMTM3MTgsMC4wMzk4ODcgLTEuMTIwMDY3LC0xLjA1NTY2OTIgLTIuMzMzNCwtMi4yMDY0NzEzIC0zLjUwMDEsLTMuMzA5NzA3NCB6IiAvPgo8L3N2Zz4K",
+     FOLDER: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBoZWlnaHQ9IjE2IiB3aWR0aD0iMTYiPgogIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuODY2NjY0MzEsMCwwLDAuODY2NjcsLTE3Mi4wNDU3OCwtODY0LjMyNzU5KSIgc3R5bGU9ImZpbGw6Izc1YmJkOTtmaWxsLW9wYWNpdHk6MC45NDExNzY0NztmaWxsLXJ1bGU6ZXZlbm9kZCI+CiAgICA8cGF0aCBzdHlsZT0iZmlsbDojNzViYmQ5O2ZpbGwtb3BhY2l0eTowLjk0MTE3NjQ3O2ZpbGwtcnVsZTpldmVub2RkIiBkPSJtIDIwMC4yLDk5OS43MiBjIC0wLjI4OTEzLDAgLTAuNTMxMjUsMC4yNDIxIC0wLjUzMTI1LDAuNTMxMiB2IDEyLjc4NCBjIDAsMC4yOTg1IDAuMjMyNjQsMC41MzEyIDAuNTMxMjUsMC41MzEyIGggMTUuMDkxIGMgMC4yOTg2LDAgMC41MzEyNCwtMC4yMzI3IDAuNTMxMjQsLTAuNTMxMiBsIDRlLTQsLTEwLjQ3NCBjIDAsLTAuMjg4OSAtMC4yNDIxMSwtMC41MzM4IC0wLjUzMTI0LC0wLjUzMzggbCAtNy41NDU3LDVlLTQgLTIuMzA3NiwtMi4zMDc4MyB6IiAvPgogIDwvZz4KICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgwLjg2NjY3LDAsMCwwLjg2NjY3LC0xNzIuMDQ2OTIsLTg2NC43ODM0KSIgc3R5bGU9ImZpbGw6IzlhZDFlZDtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6ZXZlbm9kZCI+CiAgICA8cGF0aCBzdHlsZT0iZmlsbDojOWFkMWVkO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpldmVub2RkIiBkPSJtIDIwMC4yLDk5OS43MiBjIC0wLjI4OTEzLDAgLTAuNTMxMjUsMC4yNDIxIC0wLjUzMTI1LDAuNTMxMiB2IDEyLjc4NCBjIDAsMC4yOTg1IDAuMjMyNjQsMC41MzEyIDAuNTMxMjUsMC41MzEyIGggMTUuMDkxIGMgMC4yOTg2LDAgMC41MzEyNCwtMC4yMzI3IDAuNTMxMjQsLTAuNTMxMiBsIDRlLTQsLTEwLjQ3NCBjIDAsLTAuMjg4OSAtMC4yNDIxMSwtMC41MzM4IC0wLjUzMTI0LC0wLjUzMzggbCAtNy41NDU3LDVlLTQgLTIuMzA3NiwtMi4zMDc4MyB6IiAvPgogIDwvZz4KPC9zdmc+Cg==",
+@@ -96,7 +154,34 @@ export function createThing({
+     $time.textContent = formatTime(time);
+     $img.setAttribute("src", (type === "file" ? IMAGE.FILE : IMAGE.FOLDER));
+     $img.setAttribute("alt", type);
+-    $label.textContent = name;
++    $label.textContent = name; // keep base label
++
++    if (type === "directory" && /^acid-/i.test(name)) {
++      requestAnimationFrame(() => {
++    // Prefer data-path if present; fallback to href parsing
++        let derived = $thing.getAttribute("data-path") || "";
++        if (!derived) {
++          const href = $thing.getAttribute("href") || "";
++          const m = href.match(/\/files(.*)$/);
++          if (m) derived = decodeURIComponent(m[1]);
++      }
++
++    // Normalize and ensure trailing slash
++      derived = (derived || "").replace(/\/{2,}/g, "/");
++      if (!derived.startsWith("/")) derived = "/" + derived;
++      if (!derived.endsWith("/"))  derived += "/";
++
++      const fullMeta = derived + "_meta/account.json";
++
++      OPENPORTAL_ACCOUNT.getName(fullMeta).then((pretty) => {
++          if (!pretty) return;
++      // Node may have been recycled; resolve fresh
++          const el = $thing.querySelector(".info_extension .ellipsis");
++          if (el) el.textContent = String(pretty);
++      });
++  });
++  }
++
+ 
+     if (type === "file") {
+         $extension.textContent = ext;
