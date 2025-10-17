@@ -109,8 +109,12 @@ body:not(.dark-mode) #app [data-bind="sidebar"] h3 input {
 body.dark-mode #app [data-bind="sidebar"] h3 input {
     font-size: 1.3rem;
     margin-left: 30px;
-    right: -20px;
+    right: -25px;
     position: relative;
+}
+body:not(.dark-mode) #app [data-bind="sidebar"] h3 input {
+    position: relative;
+    right: -5px;
 }
 body:not(.dark-mode) #app .component_filemanager_shell .component_sidebar h3:before {
     content: " ";
