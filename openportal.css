@@ -335,7 +335,7 @@ body.dark-mode #app .component_sidebar h3 {
 
 
 .list > .component_thing.view-grid > img.component_icon {
-    padding: 22px !important;
+    /*padding: 22px !important;*/
     box-sizing: border-box;
     width: 100%;
     height: 100%;
