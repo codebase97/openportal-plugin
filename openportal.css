@@ -420,7 +420,7 @@ body.dark-mode #app .component_sidebar h3 {
 }
 
 /* Sidebar CSS */
-.component_filemanager_shell .component_sidebar .component_icon {
+.component_filemanager_shell .component_sidebar img.component_icon {
     width: 24px;
     height: 24px;
 }
